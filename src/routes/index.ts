@@ -1,4 +1,4 @@
-import { userRouter } from "./user.js";
+import { userRouter } from "./user";
 
 export const useRoutes = (app) => {
   app.use("/user", userRouter);

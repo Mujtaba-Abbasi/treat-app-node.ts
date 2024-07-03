@@ -1,10 +1,10 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { pool } from "./db/index.js";
-import { config } from "./config.js";
-import { useRoutes } from "./routes/index.js";
-import { auth } from "./middleware/auth.js";
-import { whitelistRoutes } from "./whitelist-routes.js";
+import { pool } from "./db";
+import { config } from "./config";
+import { useRoutes } from "./routes";
+import { auth } from "./middleware/auth";
+import { whitelistRoutes } from "./whitelist-routes";
 
 const app = express();
 

@@ -1,7 +1,7 @@
 import { hash } from "bcrypt";
-import { pool } from "../db/index.js";
-import { lucia } from "../lucia.config.js";
-import { getUniqueId } from "../utils/uuid4.js";
+import { pool } from "../db";
+import { lucia } from "../lucia.config";
+import { getUniqueId } from "../utils/uuid4";
 
 export const createUser = async (request, response) => {
   try {

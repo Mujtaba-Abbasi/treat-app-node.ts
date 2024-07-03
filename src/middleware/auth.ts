@@ -1,4 +1,4 @@
-import { lucia } from "../lucia.config.js";
+import { lucia } from "../lucia.config";
 
 export const auth = async (request, response, next) => {
   try {

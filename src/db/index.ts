@@ -1,5 +1,5 @@
 import pg from "pg";
-import { config } from "../config.js";
+import { config } from "../config";
 const { Pool } = pg;
 
 export const pool = new Pool({
@@ -7,5 +7,5 @@ export const pool = new Pool({
   host: config.db.DB_HOST,
   password: config.db.DB_PASSWORD,
   database: config.db.DB_NAME,
-  port: config.db.DB_PORT,
+  port: Number(config.db.DB_PORT) ?? 5432,
 });
