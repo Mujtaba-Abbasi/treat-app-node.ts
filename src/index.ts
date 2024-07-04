@@ -1,12 +1,12 @@
-import express from "express";
+import express, { Application } from "express";
 import cookieParser from "cookie-parser";
 import { pool } from "./db";
 import { config } from "./config";
 import { useRoutes } from "./routes";
-import { auth } from "./middleware/auth";
+import { auth } from "./middlewares";
 import { whitelistRoutes } from "./whitelist-routes";
 
-const app = express();
+const app: Application = express();
 
 app.use(express.json());
 app.use(cookieParser());

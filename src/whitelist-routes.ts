@@ -1,1 +1,1 @@
-export const whitelistRoutes = ["/user/create"];
+export const whitelistRoutes = ["/user/create", "/auth/login"];

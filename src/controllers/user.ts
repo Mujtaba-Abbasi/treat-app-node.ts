@@ -1,9 +1,9 @@
+import { Request, Response } from "express";
 import { hash } from "bcrypt";
 import { pool } from "../db";
-import { lucia } from "../lucia.config";
-import { getUniqueId } from "../utils/uuid4";
+import { createSession } from "../utils/createSession";
 
-export const createUser = async (request, response) => {
+export const createUser = async (request: Request, response: Response) => {
   try {
     const { first_name, last_name, email, username, password } = request.body;
 
@@ -29,25 +29,17 @@ export const createUser = async (request, response) => {
 
     const user = result.rows[0];
 
-    // userId, attributes, optional options (sessionId)
-    const session = await lucia.createSession(
-      user.id,
-      {},
-      { sessionId: getUniqueId() }
-    );
+    const session = await createSession(user.id);
 
-    response.cookie("session", session.id, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 24 * 60 * 60 * 1000,
-      sameSite: "strict",
-    });
+    if (session) {
+      response.cookie("session", session.id, session.payload);
+    }
 
     response.status(201).json({
       message: "User created successfully",
       data: user,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error in createUser:", error);
     response.status(400).json({
       message: error?.message || "Something went wrong creating the user",
@@ -56,7 +48,7 @@ export const createUser = async (request, response) => {
   }
 };
 
-export const getUserById = async (request, response) => {
+export const getUserById = async (request: Request, response: Response) => {
   try {
     const { user } = request.locals;
     const { id } = request.params;
