@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { compare } from "bcrypt";
 import { pool } from "../db";
 import { createSession } from "../utils/createSession";
+import { lucia } from "../lucia.config";
 
 export const login = async (request: Request, response: Response) => {
   try {
@@ -32,7 +33,7 @@ export const login = async (request: Request, response: Response) => {
     const session = await createSession(user.id);
 
     if (session) {
-      response.cookie("session", session.id, session.payload);
+      response.cookie("auth_session", session.id, session.payload);
     }
 
     delete user.hashed_password;
@@ -44,6 +45,31 @@ export const login = async (request: Request, response: Response) => {
   } catch (error: any) {
     response.status(400).json({
       message: error?.message || "Something went wrong",
+    });
+  }
+};
+
+export const logout = async (request: Request, response: Response) => {
+  try {
+    const { session } = request.locals;
+
+    await lucia.invalidateSession(session.id);
+
+    const sessionCookie = lucia.createBlankSessionCookie();
+
+    response.cookie(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes
+    );
+
+    response.status(200).json({
+      message: "Logout successful",
+    });
+  } catch (error: any) {
+    console.log(`The error is in logout =>`, error);
+    response.status(400).json({
+      message: error?.message || "Something went wrong logging out",
     });
   }
 };

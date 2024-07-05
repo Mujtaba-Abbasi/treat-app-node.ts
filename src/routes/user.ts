@@ -5,4 +5,4 @@ export const userRouter = Router();
 
 userRouter.post("/create", createUser);
 
-userRouter.get("/:id", getUserById);
+userRouter.get("/:id?", getUserById);

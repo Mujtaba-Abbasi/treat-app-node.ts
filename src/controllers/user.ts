@@ -79,7 +79,7 @@ export const getUserById = async (request: Request, response: Response) => {
       message: "User fetched successfully",
       data: userInfo,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log(`There is an error`, error?.message);
     response.status(400).json({
       message:
