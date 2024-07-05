@@ -10,7 +10,7 @@
   "scripts": {
     "build": "rm -rf dist && tsc --outDir dist",
     "compile": "tsc",
-    "dev": "tsx watch src/index.ts",
+    "dev": "tsx watch --clear-screen=false src/index.ts",
     "start": "node dist/index.js"
   },
   "keywords": [],
