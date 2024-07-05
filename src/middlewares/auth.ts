@@ -1,6 +1,11 @@
+import { NextFunction, Request, Response } from "express";
 import { lucia } from "../lucia.config";
 
-export const auth = async (request, response, next) => {
+export const auth = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
   try {
     const cookie = request.headers.cookie;
 
@@ -10,11 +15,22 @@ export const auth = async (request, response, next) => {
       });
     }
 
-    const sessionId = cookie.split("=")[1];
+    const sessionId = cookie
+      .split(";")
+      .map((item) => item.trim())
+      .find((item) => item.startsWith("auth_session="))
+      ?.split("=")?.[1];
+
+    if (!sessionId) {
+      return response.status(401).json({
+        message: "Invalid session",
+      });
+    }
 
     const validationRes = await lucia.validateSession(sessionId);
 
     if (!validationRes.session || !validationRes.user) {
+      await lucia.invalidateSession(sessionId);
       return response.status(401).json({
         message: "You are not authorized to make this request",
       });
@@ -25,10 +41,10 @@ export const auth = async (request, response, next) => {
     };
 
     next();
-  } catch (error) {
+  } catch (error: any) {
     console.error("Authentication error:", error.message);
     response.status(500).json({
-      message: "Internal Server Error",
+      message: error?.message || "Internal Server Error",
     });
   }
 };
