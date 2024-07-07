@@ -6,7 +6,9 @@ declare global {
   namespace Express {
     interface Request {
       locals: {
-        user: User;
+        user: User & {
+          role?: String;
+        };
         session: Session;
       };
     }

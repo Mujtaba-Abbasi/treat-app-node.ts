@@ -1,11 +1,12 @@
 -- 20230701_01_create_initial_tables.sql
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+
 CREATE TABLE IF NOT EXISTS "user" (
     id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
     first_name VARCHAR(256),
     last_name VARCHAR(256),
-    username VARCHAR(16) UNIQUE NOT NULL,
+    username VARCHAR(128) UNIQUE NOT NULL,
     email VARCHAR(256) UNIQUE NOT NULL,
     role VARCHAR(10) NOT NULL DEFAULT 'Member',
     hashed_password VARCHAR(512) NOT NULL,

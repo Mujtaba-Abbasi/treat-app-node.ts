@@ -4,14 +4,14 @@ import { pool } from "./db";
 import { config } from "./config";
 import { useRoutes } from "./routes";
 import { auth } from "./middlewares";
-import { whitelistRoutes } from "./whitelist-routes";
+import { whitelistRoutes } from "./constants/whitelist-routes";
 
 const app: Application = express();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(async (request, response, next) => {
-  if (whitelistRoutes.includes(request.path)) {
+  if (whitelistRoutes.some((item) => request.path.startsWith(item))) {
     return next();
   }
   return auth(request, response, next);
