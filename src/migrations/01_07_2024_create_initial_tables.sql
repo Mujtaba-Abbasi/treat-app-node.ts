@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS treat (
     description TEXT,
     is_fulfilled BOOLEAN DEFAULT false,
     fulfilled_on TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     user_id UUID NOT NULL,
     FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
 );
