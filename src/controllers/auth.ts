@@ -17,7 +17,7 @@ export const login = async (request: Request, response: Response) => {
     const user = queryRes.rows?.[0];
 
     if (!user) {
-      response.status(400).json({
+      return response.status(400).json({
         message: "User not found with the provided credentials",
       });
     }
@@ -25,7 +25,7 @@ export const login = async (request: Request, response: Response) => {
     const isPasswordValid = await compare(password, user.hashed_password);
 
     if (!isPasswordValid) {
-      response.status(400).json({
+      return response.status(400).json({
         message: "Invalid credentials. Kindly provide valid credentials",
       });
     }
