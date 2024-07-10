@@ -11,7 +11,7 @@
     "build": "rm -rf dist && tsc --outDir dist",
     "compile": "tsc",
     "dev": "tsx watch --clear-screen=false src/index.ts",
-    "start": "node dist/index.js",
+    "start": "tsx src/index.ts",
     "run-migrations": "tsx ./src/scripts/run-migrations.ts"
   },
   "keywords": [],
