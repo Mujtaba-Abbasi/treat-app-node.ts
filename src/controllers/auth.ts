@@ -3,6 +3,7 @@ import { compare, hash } from "bcrypt";
 import { pool } from "../db";
 import { createSession } from "../utils/createSession";
 import { lucia } from "../lucia.config";
+import { RegisterSchemaType } from "../utils/types";
 
 export const login = async (request: Request, response: Response) => {
   try {
@@ -76,14 +77,13 @@ export const logout = async (request: Request, response: Response) => {
 
 export const register = async (request: Request, response: Response) => {
   try {
-    const { first_name, last_name, email, username, password } = request.body;
-
-    if (!first_name || !last_name || !email || !username || !password) {
-      return response.status(400).json({
-        message: "Missing fields",
-        data: null,
-      });
-    }
+    const {
+      firstName,
+      lastName,
+      email,
+      username,
+      password,
+    }: RegisterSchemaType = request.body;
 
     const hashed_password = await hash(password, 10);
 
@@ -94,7 +94,7 @@ export const register = async (request: Request, response: Response) => {
         RETURNING id, username, created_at AS createdAt
         `;
 
-    const values = [first_name, last_name, email, username, hashed_password];
+    const values = [firstName, lastName, email, username, hashed_password];
 
     const result = await pool.query(query, values);
 
