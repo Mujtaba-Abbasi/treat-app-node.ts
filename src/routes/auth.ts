@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { login, logout, register } from "../controllers";
 import { validate } from "../middlewares";
-import { LoginSchema } from "../utils";
+import { LoginSchema, RegisterSchema } from "../utils";
 
 export const authRouter = Router();
 
 authRouter.post("/login", validate(LoginSchema), login);
-authRouter.post("/register", register);
+authRouter.post("/register", validate(RegisterSchema), register);
 
 authRouter.get("/logout", logout);
