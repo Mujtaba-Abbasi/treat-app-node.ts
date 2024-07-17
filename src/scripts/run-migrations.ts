@@ -8,7 +8,7 @@ import { pool } from "../db/index.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-async function runMigrations() {
+export async function runMigrations() {
   try {
     console.log("Starting the db migrations script");
     await pool.query(`

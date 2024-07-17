@@ -5,6 +5,7 @@ import { config } from "./config";
 import { useRoutes } from "./routes";
 import { auth } from "./middlewares";
 import { whitelistRoutes } from "./constants/whitelist-routes";
+import { runMigrations } from "./scripts/run-migrations";
 
 const app: Application = express();
 
@@ -24,6 +25,11 @@ const startServer = async () => {
     console.log(`Connecting to the database`);
     await pool.connect();
     console.log("Connected to PostgreSQL database");
+
+    console.log("Running schema migrations");
+
+    runMigrations();
+
     console.log("Importing Routes");
     useRoutes(app);
     app.listen(PORT, () => {
